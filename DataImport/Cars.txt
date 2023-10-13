@@ -1,0 +1,7 @@
+abc12345:Bmw:iX4:2015
+eer12225:Saab:93:2003
+zdf11125:Mercedes:C200:2002
+rty99074:Porsche:911 4S:1980
+
+vea85184:Hyundai:KonaS2014
+plk03611:Volvo:C 64:1995
