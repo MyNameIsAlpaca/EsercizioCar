@@ -1,0 +1,5 @@
+eer12225,Saab,93,2003,TurboDiesel,1900;
+zdf11125,Mercedes,C200,2002,Benzina,2000;
+rty99074,Porsche,911 4S,1980,TurboBenzina,3000;
+plk03611,Volvo,C 64,1995,Diesel,2200;
+abc12345,Fiat,Punto,1998,Benzina,1000;

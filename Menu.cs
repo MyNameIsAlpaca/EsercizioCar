@@ -23,7 +23,7 @@ namespace EsercizioCar
                 {
                     Console.WriteLine("Benvenuto!");
                     Console.WriteLine("Scegli cosa vuoi fare");
-                    Console.WriteLine("1) Inserisci automobile\n2) Modifica automobile\n3) Elimina automobile\n4) Cerca automobile\n5) Visualizza tutti le automobile disponibili\n6) Esci");
+                    Console.WriteLine("1) Inserisci automobile\n2) Modifica automobile\n3) Elimina automobile\n4) Cerca automobile\n5) Visualizza tutti le automobile disponibili\n6) Esporta auto inserite\n7) Esci");
                     string userInput = Console.ReadLine();
                     if (int.TryParse(userInput, out int userChoose))
                     {
@@ -51,6 +51,10 @@ namespace EsercizioCar
                                 carManager.PrintCar(carList.carList);
                             }
                             else if (userChoose == 6)
+                            {
+                                carManager.ExportCar(carList.carList);
+                            }
+                            else if (userChoose == 7)
                             {
                                 close = true;
                             }
