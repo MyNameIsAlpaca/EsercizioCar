@@ -10,11 +10,5 @@ namespace EsercizioCar.StoreData
     {
         public List<Car> carList = new List<Car>();
 
-        //public List<Car> importedCar = new List<Car>();
-
-
-
-        //public List<CarCharateristic> carCharateristic = new List();
-
     }
 }
