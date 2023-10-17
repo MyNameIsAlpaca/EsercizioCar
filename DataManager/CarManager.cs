@@ -100,7 +100,6 @@ namespace EsercizioCar.DataManager
                                     Console.ForegroundColor = ConsoleColor.Red;
                                     Console.WriteLine("Attenzione! L'auto è già presente nel database");
                                     Console.ForegroundColor = ConsoleColor.White;
-
                                     return;   
                                 }
                                 close = false;
