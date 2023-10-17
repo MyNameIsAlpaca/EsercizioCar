@@ -25,11 +25,11 @@ namespace EsercizioCar
                 while (!close)
                 {
                     Console.WriteLine("Scegli cosa vuoi fare");
-                    Console.WriteLine("1) Inserisci automobile\n2) Modifica automobile\n3) Elimina automobile\n4) Cerca automobile\n5) Visualizza tutti le automobile disponibili\n6) Esporta auto inserite\n7) Esci\n8) Export xml");
+                    Console.WriteLine("1) Inserisci automobile\n2) Modifica automobile\n3) Elimina automobile\n4) Cerca automobile\n5) Visualizza tutti le automobile disponibili\n6) Esporta auto inserite\n7) Esci\n8) Export xml\n9) Export Json");
                     string userInput = Console.ReadLine();
                     if (int.TryParse(userInput, out int userChoose))
                     {
-                        if (userChoose <= 8 && userChoose > 0)
+                        if (userChoose <= 9 && userChoose > 0)
                         {
                             if (userChoose == 1)
                             {
@@ -40,7 +40,7 @@ namespace EsercizioCar
                             {
                                 carManager.EditCar(carList.carList);
                             }
-                            else if(userChoose == 3) 
+                            else if (userChoose == 3)
                             {
                                 carManager.DeleteCar(carList.carList);
                             }
@@ -60,7 +60,15 @@ namespace EsercizioCar
                             {
                                 close = true;
                             }
-                            
+                            else if (userChoose == 8)
+                            {
+                                carManager.ExportXml(carList.carList);
+                            }
+                            else if (userChoose == 9)
+                            {
+                                carManager.ExportJson(carList.carList);
+                            }
+
                         }
                         else
                         {

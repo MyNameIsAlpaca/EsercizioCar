@@ -1,0 +1,16 @@
+[
+  {
+    "Id": "ada12999",
+    "Company": "fiat",
+    "Model": "multipla",
+    "ProductYear": 1999,
+    "carCharateristics": [
+      {
+        "Id": 1,
+        "CarEngine": 1000,
+        "CarId": "ada12999",
+        "CarFuel": "benzina"
+      }
+    ]
+  }
+]

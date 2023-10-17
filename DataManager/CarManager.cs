@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using EsercizioCar.StoreData;
 using System.Xml;
 using System.Xml.Serialization;
+using Newtonsoft.Json;
 
 namespace EsercizioCar.DataManager
 {
@@ -914,5 +915,48 @@ namespace EsercizioCar.DataManager
 
 
         }
+        public void ExportXml(List<Car> carList)
+        {
+            try 
+            {
+            XmlSerializer serializer = new XmlSerializer(typeof(List<Car>));
+
+            using (var writer = new StreamWriter(@"C:\Users\Gabriele\Documents\Betacom\EsercizioCar\DataSave\XmlExport.xml"))
+            {
+                serializer.Serialize(writer, carList);
+            }
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Auto esportate con successo!");
+                Console.ForegroundColor = ConsoleColor.White;
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Errore: {ex}");
+            }
+
+        }
+
+        public void ExportJson(List<Car> carList)
+        {
+            try
+            {
+                object jsonOut = JsonConvert.SerializeObject(carList, Newtonsoft.Json.Formatting.Indented);
+                using (StreamWriter writer = new StreamWriter(Path.Combine("C:\\Users\\Gabriele\\Documents\\Betacom\\EsercizioCar\\DataSave", "Exported.json")))
+                {
+                    writer.WriteLine(jsonOut);
+                }
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Auto esportate con successo!");
+                Console.ForegroundColor = ConsoleColor.White;
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Errore: {ex}");
+            }
+        }
     }
+
 }

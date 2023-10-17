@@ -8,8 +8,9 @@ using EsercizioCar.StoreData;
 namespace EsercizioCar.StoreData
 {
     
-        internal class Car
+        public class Car
         {
+        Car() { }
             public string Id { get; set; }
             public string Company { get; set; }
             public string Model { get; set; }
@@ -27,8 +28,9 @@ namespace EsercizioCar.StoreData
             }
         }
 
-        internal class CarCharateristic
+        public class CarCharateristic
         {
+            CarCharateristic() { }
             public int Id { get; set; }
             public int CarEngine { get; set; }
             public string CarId { get; set; }

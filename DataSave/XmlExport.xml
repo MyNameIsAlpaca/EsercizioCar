@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfCar xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Car>
+    <Id>daa12121</Id>
+    <Company>fiat</Company>
+    <Model>multipla</Model>
+    <ProductYear>1992</ProductYear>
+    <carCharateristics>
+      <CarCharateristic>
+        <Id>1</Id>
+        <CarEngine>10000</CarEngine>
+        <CarId>daa12121</CarId>
+        <CarFuel>benzina</CarFuel>
+      </CarCharateristic>
+    </carCharateristics>
+  </Car>
+</ArrayOfCar>
