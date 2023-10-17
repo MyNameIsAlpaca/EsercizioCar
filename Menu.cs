@@ -19,15 +19,17 @@ namespace EsercizioCar
         {
             try
             {
+                Console.WriteLine("");
+                Console.WriteLine("======== Benvenuto ========");
+                Console.WriteLine("");
                 while (!close)
                 {
-                    Console.WriteLine("Benvenuto!");
                     Console.WriteLine("Scegli cosa vuoi fare");
-                    Console.WriteLine("1) Inserisci automobile\n2) Modifica automobile\n3) Elimina automobile\n4) Cerca automobile\n5) Visualizza tutti le automobile disponibili\n6) Esporta auto inserite\n7) Esci");
+                    Console.WriteLine("1) Inserisci automobile\n2) Modifica automobile\n3) Elimina automobile\n4) Cerca automobile\n5) Visualizza tutti le automobile disponibili\n6) Esporta auto inserite\n7) Esci\n8) Export xml");
                     string userInput = Console.ReadLine();
                     if (int.TryParse(userInput, out int userChoose))
                     {
-                        if (userChoose <= 6 && userChoose > 0)
+                        if (userChoose <= 8 && userChoose > 0)
                         {
                             if (userChoose == 1)
                             {
@@ -58,6 +60,7 @@ namespace EsercizioCar
                             {
                                 close = true;
                             }
+                            
                         }
                         else
                         {

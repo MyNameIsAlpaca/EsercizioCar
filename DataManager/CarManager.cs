@@ -7,11 +7,14 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using EsercizioCar.StoreData;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace EsercizioCar.DataManager
 {
     internal class CarManager
     {
+        Utility utility = new Utility();
         bool close = false;
         static int idCarS;
         static int idCarC;
@@ -21,6 +24,9 @@ namespace EsercizioCar.DataManager
         {
             while (!close)
             {
+                Console.WriteLine("");
+                Console.WriteLine("== Aggiunta automobile ==");
+                Console.WriteLine("");
                 Console.WriteLine("Come vuoi inserire una nuova automobile?\n1) Aggiunta manuale\n2) Aggiunta automatica\n3) Aggiungi automaticamente un file con le caratteristiche");
                 Console.WriteLine("Oppure inserisci f per tornare indietro");
 
@@ -39,7 +45,7 @@ namespace EsercizioCar.DataManager
                         if (userChoose == 1)
                         {
                             Console.Clear();
-                            Console.WriteLine("Inserisci il numero di telaio");
+                            Console.WriteLine("Inserisci il numero della matricola");
                             Console.WriteLine("Oppure inserisci f per annullare la creazione");
                             Console.ForegroundColor = ConsoleColor.Blue;
                             Console.WriteLine("Es. ABC12345");
@@ -47,9 +53,9 @@ namespace EsercizioCar.DataManager
 
                             while (!close)
                             {
+                                Console.WriteLine("Inserisci la prima parte della matricola composta da 3 lettere");
                                 while (!close)
                                 {
-                                Console.WriteLine("Inserisci la prima parte del telaio composta da 3 lettere");
                                 string firstPartId = Console.ReadLine();
 
                                 if(firstPartId.ToLower() == "f")
@@ -60,15 +66,13 @@ namespace EsercizioCar.DataManager
 
                                 if (firstPartId.Length != 3)
                                 {
-                                    Console.ForegroundColor = ConsoleColor.Red;
-                                    Console.WriteLine("La prima parte del telaio è composta da 3 lettere");
-                                    Console.ForegroundColor = ConsoleColor.White;
-                                }
+                                        utility.errorMessage("La prima parte della matricola è composta da 3 lettere");
+                                    }
                                 else
                                 {
+                                    Console.WriteLine("Inserisci la seconda parte della matricola è composta da 5 numeri");
                                     while (!close)
                                     {
-                                        Console.WriteLine("Inserisci la seconda parte del telaio composta da 5 numeri");
                                         if (int.TryParse(Console.ReadLine(), out int secondPartOfId))
                                             {
                                             if (secondPartOfId.ToString().Length == 5)
@@ -78,18 +82,14 @@ namespace EsercizioCar.DataManager
                                             }
                                             else
                                             {
-                                                Console.ForegroundColor = ConsoleColor.Red;
-                                                Console.WriteLine("La seconda parte del telaio è composta da 5 numeri");
-                                                Console.ForegroundColor = ConsoleColor.White;
+                                                utility.errorMessage("La seconda parte della matricola è composta da 5 numeri");
                                             }
                                         }
                                         else
                                         {
-                                            Console.ForegroundColor = ConsoleColor.Red;
-                                            Console.WriteLine("Seconda parte del telaio errata, riprova");
-                                            Console.ForegroundColor = ConsoleColor.White;
+                                            utility.errorMessage("Seconda parte del telaio errata, riprova");
+                                            }
                                         }
-                                    }
 
                                 }
                                 }
@@ -100,12 +100,11 @@ namespace EsercizioCar.DataManager
                                     Console.ForegroundColor = ConsoleColor.Red;
                                     Console.WriteLine("Attenzione! L'auto è già presente nel database");
                                     Console.ForegroundColor = ConsoleColor.White;
-
-                                    return;   
+                                    Console.ReadLine();
+                                    break;
                                 }
                                 close = false;
-
-                                Console.WriteLine("Inserisci la marca dell'auto");
+                                Console.WriteLine($"Inserisci la marca dell'auto{new string(' ', 40)}");
 
                                 string companyCar = string.Empty;
 
@@ -118,15 +117,12 @@ namespace EsercizioCar.DataManager
                                     }
                                     else
                                     {
-                                        Console.ForegroundColor = ConsoleColor.Red;
-                                        Console.WriteLine("La marca non è valida");
-                                        Console.ForegroundColor = ConsoleColor.White;
-                                        Console.SetCursorPosition(0, Console.CursorTop - 2);
+                                        utility.errorMessage("La marca non è valida");
                                     }
                                 }
                                 close = false;
 
-                                Console.WriteLine("Inserisci il modello dell'auto");
+                                Console.WriteLine($"Inserisci il modello dell'auto {new string(' ', 40)}");
 
                                 string ModelCar = string.Empty;
 
@@ -134,36 +130,42 @@ namespace EsercizioCar.DataManager
                                 {
                                     ModelCar = Console.ReadLine();   
 
-                                    if (ModelCar.Length > 2)
+                                    if (ModelCar.Length >= 1)
                                     {
                                         close = true;
                                     }
                                     else
                                     {
-                                        Console.ForegroundColor = ConsoleColor.Red;
-                                        Console.WriteLine("Il modello non è valido");
-                                        Console.ForegroundColor = ConsoleColor.White;
-                                        Console.SetCursorPosition(0, Console.CursorTop - 2);
+                                        utility.errorMessage("Il modello non è valido");
                                     }
                                 }
                                 close = false;
 
-                                Console.WriteLine("Inserisci l'anno dell'auto");
+                                Console.WriteLine($"Inserisci l'anno dell'auto {new string(' ', 40)}");
+
                                 int YearCar;
 
                                 while (!close)
                                 {
-                                    if (int.TryParse(Console.ReadLine(), out int userYear))
+                                    string yearChoose = Console.ReadLine();
+                                    if (int.TryParse(yearChoose, out int userYear))
                                     {
+                                        if(userYear > 1950 && userYear < 2023)
+                                        {
+
                                         YearCar = userYear;
+
                                         idCarC = idCarC + 1;
+
                                         int idChar = idCarC;
 
-                                        Console.WriteLine("Inserisci il tipo di alimentazione");
+                                        Console.WriteLine($"Inserisci il tipo di alimentazione {new string(' ', 40)}");
                                         string Fuel = Console.ReadLine();
 
-                                        Console.WriteLine("Inserisci la cilindrata");
+                                        Console.WriteLine($"Inserisci la cilindrata {new string(' ', 40)}");
                                         int Engine;
+
+                                            close = false;
 
                                         while (!close)
                                         {
@@ -182,25 +184,31 @@ namespace EsercizioCar.DataManager
                                                 Console.ForegroundColor = ConsoleColor.White;
 
                                             }
+
                                             else
                                             {
-                                                Console.ForegroundColor = ConsoleColor.Red;
-                                                Console.WriteLine("Inserisci una cilindrata valida");
-                                                Console.ForegroundColor = ConsoleColor.White;
+                                                utility.errorMessage("Inserisci una cilindrata valida");
                                             }
                                         }
+                                        }
+                                            else
+                                            {
+                                                utility.errorMessage("Inserisci una data valida");
+                                            }
+
+
                                     }
                                     else
                                     {
-                                        Console.WriteLine("Inserisci una data valida");
+                                        utility.errorMessage("Inserisci una data valida");
                                     }
                                 }
                             }
+                            close = false;
                         }
                         else if(userChoose == 2)
                         {
                             Console.Clear();
-                            //Console.WriteLine("Inserisci il path del file da cui vuoi prendere le informazioni");
                             try
                             {
                             string[] carToImport = File.ReadAllLines("C:\\Users\\Betacom\\Documents\\Betacom\\Progetti\\EsercizioCar\\DataImport\\Cars.txt");
@@ -268,6 +276,7 @@ namespace EsercizioCar.DataManager
                                         Console.ForegroundColor = ConsoleColor.Red;
 
                                         Console.WriteLine($"Non è stato possibile leggere la macchina a riga:");
+                                        Console.SetCursorPosition(50, Console.CursorTop - 1);
                                         foreach (var car in wrongCar)
                                         {
                                             Console.WriteLine($"{car} ");
@@ -283,6 +292,7 @@ namespace EsercizioCar.DataManager
 
                                         Console.WriteLine($"Sono state trovate delle righe vuote nelle posizioni:");
 
+                                        Console.SetCursorPosition(54, Console.CursorTop - 1);
 
                                         foreach (var row in emptyRow)
                                         {
@@ -493,14 +503,19 @@ namespace EsercizioCar.DataManager
             while (!close)
             {
                 Console.Clear();
+                Console.WriteLine("");
+                Console.WriteLine("== Eliminazione automobile ==");
+                Console.WriteLine("");
                 Console.WriteLine("Inserisci l'id dell'auto che vuoi eliminare");
                 Console.WriteLine("Oppure inserisci f per uscire");
                 string userChoose = Console.ReadLine().ToLower();
                 if (userChoose == "f")
                 {
                     close = true;
+                    Console.Clear();
                 }
-
+                else
+                {
                     var CarNeedRemove = carList.SingleOrDefault(r => r.Id.ToLower() == userChoose);
                     if (CarNeedRemove != null)
                     {
@@ -517,6 +532,9 @@ namespace EsercizioCar.DataManager
                         Console.WriteLine("L'id inserito non corrisponde a nessuna auto");
                         Console.ForegroundColor = ConsoleColor.White;
                     }
+
+                }
+
             }
             close = false;
         }
@@ -526,6 +544,9 @@ namespace EsercizioCar.DataManager
             Console.Clear();
             while (!close)
             {
+                Console.WriteLine("");
+                Console.WriteLine("== Ricerca automobile ==");
+                Console.WriteLine("");
                 Console.WriteLine("Vuoi cercare un auto tramite:");
                 Console.WriteLine("1) Marca di auto\n2) Anno di produzione\n oppure premi f per uscire");
                 string userType = Console.ReadLine();
@@ -534,6 +555,10 @@ namespace EsercizioCar.DataManager
                     if(userChoose == 1)
                     {
                         Console.Clear();
+
+                        Console.WriteLine("");
+                        Console.WriteLine("== Ricerca automobile ==");
+                        Console.WriteLine("");
 
                         Console.WriteLine("Inserisci la marca da ricercare");
 
@@ -582,6 +607,10 @@ namespace EsercizioCar.DataManager
                     else
                     {
                         Console.Clear();
+
+                        Console.WriteLine("");
+                        Console.WriteLine("== Ricerca automobile ==");
+                        Console.WriteLine("");
 
                         Console.WriteLine("Inserisci l'anno da ricercare");
 
@@ -673,161 +702,164 @@ namespace EsercizioCar.DataManager
 
         public void EditCar(List<Car> carList)
         {
+            Console.Clear();
             while (!close)
             {
-                Console.Clear();
+                Console.WriteLine("");
+                Console.WriteLine("== Modifica automobile ==");
+                Console.WriteLine("");
+
                 Console.WriteLine("Inserisci la matricola dell'auto che vuoi modificare");
                 Console.WriteLine("Oppure inserisci f per uscire");
                 string userChoose = Console.ReadLine().ToLower();
-                if (userChoose == "f")
+                if (userChoose.ToLower() == "f")
                 {
                     close = true;
-                }
-
-                var CarNeedToUpdate = carList.SingleOrDefault(r => r.Id.ToLower() == userChoose);
-                if (CarNeedToUpdate != null)
-                {
-                    while (!close)
-                    {
-                        while (!close)
-                        {
-                            Console.WriteLine("Inserisci la prima parte del telaio composta da 3 lettere");
-                            string firstPartId = Console.ReadLine();
-
-                            if (firstPartId.Length != 3 && firstPartId.Length != 0)
-                            {
-                                Console.ForegroundColor = ConsoleColor.Red;
-                                Console.WriteLine("Il numero minimo e massimo di lettere che puoi aggiungere è 3");
-                                Console.ForegroundColor = ConsoleColor.White;
-                            }
-                            else
-                            {
-                                if(firstPartId.Length == 0)
-                                {
-                                    firstPartId = CarNeedToUpdate.Id.Substring(0, 3);
-                                }
-                                while (!close)
-                                {
-                                    Console.WriteLine("Inserisci la seconda parte del telaio composta da 5 numeri");
-                                    string updateSecondString = Console.ReadLine();
-                                    if (int.TryParse(updateSecondString, out int secondPartOfId) || updateSecondString == "")
-                                    {
-                                        if (secondPartOfId.ToString().Length == 5 || secondPartOfId.ToString().Length == 0)
-                                        {
-                                            if(secondPartOfId == 0)
-                                            {
-                                                int oldValue = int.Parse(CarNeedToUpdate.Id.Substring(3));
-                                                secondPartOfId = oldValue;
-                                            }
-                                            else
-                                            {
-                                            idCar = firstPartId + secondPartOfId;
-
-                                            }
-                                            close = true;
-                                        }
-                                        else
-                                        {
-                                            Console.ForegroundColor = ConsoleColor.Red;
-                                            Console.WriteLine("La seconda parte del telaio deve essere di massimo 5 caratteri");
-                                            Console.ForegroundColor = ConsoleColor.White;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        Console.ForegroundColor = ConsoleColor.Red;
-                                        Console.WriteLine("Seconda parte del telaio errata, riprova");
-                                        Console.ForegroundColor = ConsoleColor.White;
-                                    }
-                                }
-
-                            }
-                        }
-                        close = false;
-
-                        Console.WriteLine("Inserisci la marca dell'auto");
-
-                        string CompanyCar = Console.ReadLine();
-
-                        if(CompanyCar == "")
-                        {
-                            CompanyCar = CarNeedToUpdate.Company;
-                        }
-
-
-                        Console.WriteLine("Inserisci il modello dell'auto");
-                        string ModelCar = Console.ReadLine();
-
-                        if(ModelCar == "")
-                        {
-                            ModelCar = CarNeedToUpdate.Model;
-                        }
-
-                        Console.WriteLine("Inserisci l'anno dell'auto");
-                        int YearCarUpdate;
-
-                        while (!close)
-                        {
-                            string yearInp = Console.ReadLine();
-
-                            if (int.TryParse(yearInp, out int userYear) || yearInp == "")
-                            {
-                                if(yearInp == "")
-                                {
-                                    YearCarUpdate = CarNeedToUpdate.ProductYear;
-                                }
-                                else
-                                {
-                                    YearCarUpdate = userYear;
-
-                                }
-                                idCarC = idCarC + 1;
-                                int idChar = idCarC;
-
-                                Console.WriteLine("Inserisci il tipo di alimentazione");
-                                string Fuel = Console.ReadLine();
-
-                                Console.WriteLine("Inserisci la cilindrata");
-                                int Engine;
-
-                                while (!close)
-                                {
-                                    if (int.TryParse(Console.ReadLine(), out int userEngine))
-                                    {
-                                        Engine = userEngine;
-                                        carList.Remove(CarNeedToUpdate);
-                                        CarCharateristic createCharateristic = new CarCharateristic(Fuel, Engine, idCar, idChar);
-                                        Car createCar = new Car(idCar, CompanyCar, ModelCar, YearCarUpdate, carList, createCharateristic);
-                                        close = true;
-
-                                        Console.Clear();
-
-                                        Console.ForegroundColor = ConsoleColor.Green;
-                                        Console.WriteLine("Auto aggiornata con successo");
-                                        Console.ForegroundColor = ConsoleColor.White;
-
-                                    }
-                                    else
-                                    {
-                                        Console.ForegroundColor = ConsoleColor.Red;
-                                        Console.WriteLine("Inserisci una cilindrata valida");
-                                        Console.ForegroundColor = ConsoleColor.White;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                Console.WriteLine("Inserisci una data valida");
-                            }
-                        }
-                    }
+                    Console.Clear();
                 }
                 else
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("La matricola inserita non corrisponde a nessuna auto");
-                    Console.ForegroundColor = ConsoleColor.White;
+                    var CarNeedToUpdate = carList.SingleOrDefault(r => r.Id.ToLower() == userChoose);
+                    if (CarNeedToUpdate != null)
+                    {
+                        while (!close)
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Inserisci la prima parte della matricola composta da 3 lettere");
+                            while (!close)
+                            {
+                                string firstPartId = Console.ReadLine();
+
+                                if (firstPartId.Length != 3 && firstPartId.Length != 0)
+                                {
+                                    utility.errorMessage("La prima parte della matricola è composta da 3 lettere");
+                                }
+                                else
+                                {
+                                    if (firstPartId.Length == 0)
+                                    {
+                                        firstPartId = CarNeedToUpdate.Id.Substring(0, 3);
+                                    }
+                                        Console.WriteLine($"Inserisci la seconda parte della matricola composta da 5 numeri {new string(' ', 40)}");
+                                    while (!close)
+                                    {
+                                        string updateSecondString = Console.ReadLine();
+                                        if (int.TryParse(updateSecondString, out int secondPartOfId) || updateSecondString == "")
+                                        {
+                                            if (secondPartOfId.ToString().Length == 5 || secondPartOfId.ToString().Length == 0)
+                                            {
+                                                if (secondPartOfId == 0)
+                                                {
+                                                    int oldValue = int.Parse(CarNeedToUpdate.Id.Substring(3));
+                                                    secondPartOfId = oldValue;
+                                                }
+                                                else
+                                                {
+                                                    idCar = firstPartId + secondPartOfId;
+
+                                                }
+                                                close = true;
+                                            }
+                                            else
+                                            {
+                                                utility.errorMessage("La seconda parte della matricola deve essere di 5 caratteri");
+                                            }
+                                        }
+                                        else
+                                        {
+                                            utility.errorMessage("La seconda parte della matricola deve essere di 5 caratteri");
+                                        }
+                                    }
+
+                                }
+                            }
+                            close = false;
+
+                            Console.WriteLine($"Inserisci la marca dell'auto{new string(' ', 40)}");
+
+                            string CompanyCar = Console.ReadLine();
+
+                            if (CompanyCar == "")
+                            {
+                                CompanyCar = CarNeedToUpdate.Company;
+                            }
+
+
+                            Console.WriteLine("Inserisci il modello dell'auto");
+                            string ModelCar = Console.ReadLine();
+
+                            if (ModelCar == "")
+                            {
+                                ModelCar = CarNeedToUpdate.Model;
+                            }
+
+                            Console.WriteLine($"Inserisci l'anno dell'auto {new string(' ', 40)}");
+                            int YearCarUpdate;
+
+                            while (!close)
+                            {
+                                string yearInp = Console.ReadLine();
+
+                                if (int.TryParse(yearInp, out int userYear) || yearInp == "")
+                                {
+                                    if (yearInp == "")
+                                    {
+                                        YearCarUpdate = CarNeedToUpdate.ProductYear;
+                                    }
+                                    else
+                                    {
+                                        YearCarUpdate = userYear;
+
+                                    }
+                                    idCarC = idCarC + 1;
+                                    int idChar = idCarC;
+
+                                    Console.WriteLine("Inserisci il tipo di alimentazione");
+                                    string Fuel = Console.ReadLine();
+
+                                    Console.WriteLine("Inserisci la cilindrata");
+                                    int Engine;
+
+                                    while (!close)
+                                    {
+                                        if (int.TryParse(Console.ReadLine(), out int userEngine))
+                                        {
+                                            Engine = userEngine;
+                                            carList.Remove(CarNeedToUpdate);
+                                            CarCharateristic createCharateristic = new CarCharateristic(Fuel, Engine, idCar, idChar);
+                                            Car createCar = new Car(idCar, CompanyCar, ModelCar, YearCarUpdate, carList, createCharateristic);
+                                            close = true;
+
+                                            Console.Clear();
+
+                                            Console.ForegroundColor = ConsoleColor.Green;
+                                            Console.WriteLine("Auto aggiornata con successo");
+                                            Console.ForegroundColor = ConsoleColor.White;
+
+                                        }
+                                        else
+                                        {
+                                            utility.errorMessage("Inserisci una cilidrata valida");
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    utility.errorMessage("Inserisci una data valida");
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Console.Clear();
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("La matricola inserita non corrisponde a nessuna auto");
+                        Console.ForegroundColor = ConsoleColor.White;
+                    }
                 }
+
+                
             }
             close = false;
         }
